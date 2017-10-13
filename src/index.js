@@ -1,6 +1,7 @@
 import React from 'react'
 import addons from '@storybook/addons'
 import { EVENT_ID } from './shared'
+import Vue from 'vue'
 
 export const WithFigma = ({
   children,
@@ -15,6 +16,29 @@ export const WithFigma = ({
   })
   return children
 }
+
+export const WithFigmaVue = Vue.component('with-figma-vue', {
+    props: {
+        url            : { type: String },
+        allowFullScreen: { type: Boolean, default: true },
+        embedHost      : { type: String, default: 'storybook' },
+    },
+    render (createElement) {
+        return createElement('iframe',
+            {
+                attrs: {
+                    height     : '100%',
+                    width      : '100%',
+                    frameBorder: '0',
+                    src        : 'https://www.figma.com/embed?embed_host=' + this.embedHost + '&url=' + this.url,
+                    allowFullScreen: this.allowFullScreen
+                }
+            },
+            this.$slots.default
+        )
+    }
+})
+
 
 export default ({
   url,
